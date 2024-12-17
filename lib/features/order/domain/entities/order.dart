@@ -1,5 +1,7 @@
 import 'package:coffee_app/features/item/domain/entities/item.dart';
+import 'package:coffee_app/theme/app_colors.dart';
 import 'package:coffee_app/user/cart/domain/entities/cart_item.dart';
+import 'package:flutter/material.dart';
 
 class Order {
   final int id;
@@ -60,6 +62,19 @@ class Order {
           ? DateTime.parse(json['finished_at'])
           : null,
     );
+  }
+
+  Color getStatusColor() {
+    switch (status) {
+      case OrderStatus.pending:
+        return Colors.orange.shade200;
+      case OrderStatus.brewing:
+        return Colors.orange;
+      case OrderStatus.ready:
+        return Colors.green;
+      case OrderStatus.finished:
+        return AppColors.primary;
+    }
   }
 }
 

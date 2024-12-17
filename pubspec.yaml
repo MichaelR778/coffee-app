@@ -13,7 +13,9 @@ dependencies:
   flutter_dotenv: ^5.2.1
   image_cropper: ^8.0.2
   image_picker: ^1.1.2
+  intl: ^0.20.1
   supabase_flutter: ^2.8.1
+  timeline_tile: ^2.0.0
 
 dev_dependencies:
   flutter_test:

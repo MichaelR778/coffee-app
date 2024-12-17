@@ -6,7 +6,7 @@ import 'package:coffee_app/theme/app_icons.dart';
 import 'package:coffee_app/user/cart/domain/entities/cart_item.dart';
 import 'package:coffee_app/user/cart/presentation/cubits/cart_cubit.dart';
 import 'package:coffee_app/user/order/presentation/pages/order_placed_page.dart';
-import 'package:coffee_app/user/order/presentation/widgets/order_item_tile.dart';
+import 'package:coffee_app/features/order/presentation/widgets/order_item_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,6 +20,10 @@ class PickupOrderPage extends StatefulWidget {
 }
 
 class _PickupOrderPageState extends State<PickupOrderPage> {
+  final double spacing = 24;
+  double total = 0;
+  final serviceFee = 1.0;
+
   Future<void> placeOrder() async {
     context.read<CartCubit>().clearCart();
     await context.read<OrderCubit>().placeOrder(widget.cartItems);
@@ -35,11 +39,10 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    const double spacing = 24;
-    double total = 0;
     for (final cartItem in widget.cartItems) {
       total += (cartItem.item.price * cartItem.quantity);
     }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -82,7 +85,7 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
           },
         ),
 
-        const SizedBox(height: spacing),
+        SizedBox(height: spacing),
 
         // apply discount
         GestureDetector(
@@ -121,7 +124,7 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
           ),
         ),
 
-        const SizedBox(height: spacing),
+        SizedBox(height: spacing),
 
         // payment summary
         const Text(
@@ -149,16 +152,16 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
           ],
         ),
         const SizedBox(height: 8),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+            const Text(
               'Service Fee',
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              '\$ 1.0',
-              style: TextStyle(
+              '\$ $serviceFee',
+              style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
               ),
@@ -179,7 +182,7 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
               style: TextStyle(fontSize: 14),
             ),
             Text(
-              '\$ ${total + 1}',
+              '\$ ${total + serviceFee}',
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -188,7 +191,7 @@ class _PickupOrderPageState extends State<PickupOrderPage> {
           ],
         ),
 
-        const SizedBox(height: spacing),
+        SizedBox(height: spacing),
 
         LoadingButton(
           text: 'Order',

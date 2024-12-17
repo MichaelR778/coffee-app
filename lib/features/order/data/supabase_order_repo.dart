@@ -30,4 +30,21 @@ class SupabaseOrderRepo implements OrderRepo {
         .order('created_at', ascending: true)
         .map((jsons) => jsons.map((json) => Order.fromJson(json)).toList());
   }
+
+  @override
+  Future<void> cancelOrder(int orderId) async {
+    try {
+      final orderJson =
+          await supabase.from('orders').select().eq('id', orderId).single();
+      final order = Order.fromJson(orderJson);
+
+      if (order.status != OrderStatus.pending) {
+        throw Exception('Can\'t cancel, order has already been accepted');
+      }
+
+      await supabase.from('orders').delete().eq('id', orderId);
+    } catch (e) {
+      throw Exception('Failed to cancel order: $e');
+    }
+  }
 }

@@ -74,4 +74,16 @@ class OrderCubit extends Cubit<OrderState> {
       loadUserOrder();
     }
   }
+
+  Future<void> cancelOrder(int orderId) async {
+    try {
+      await orderRepo.cancelOrder(orderId);
+    } catch (e) {
+      emit(OrderError(message: e.toString()));
+    } finally {
+      // only user can cancel their own order
+      // therefore loaduserorder is used
+      loadUserOrder();
+    }
+  }
 }
