@@ -6,8 +6,13 @@ import 'package:timeline_tile/timeline_tile.dart';
 
 class OrderStatusTimeline extends StatelessWidget {
   final Order order;
+  final bool admin;
 
-  const OrderStatusTimeline({super.key, required this.order});
+  const OrderStatusTimeline({
+    super.key,
+    required this.order,
+    this.admin = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +21,7 @@ class OrderStatusTimeline extends StatelessWidget {
         _buildTimelineTile(
           status: OrderStatus.pending,
           title: 'Order Placed',
-          subtitle: 'Your order is being processed',
+          subtitle: '${admin ? 'Order' : 'Your order'} is being processed',
           time: order.createdAt,
           icon: Icons.pending_outlined,
           isFirst: true,
@@ -24,21 +29,23 @@ class OrderStatusTimeline extends StatelessWidget {
         _buildTimelineTile(
           status: OrderStatus.brewing,
           title: 'Brewing',
-          subtitle: 'Your order is being prepared',
+          subtitle: '${admin ? 'Order' : 'Your order'} is being prepared',
           time: order.acceptedAt,
           icon: Icons.coffee_outlined,
         ),
         _buildTimelineTile(
           status: OrderStatus.ready,
           title: 'Ready for Pickup',
-          subtitle: 'Your order is ready to collect',
+          subtitle: '${admin ? 'Order' : 'Your order'} is ready to collect',
           time: order.readyAt,
           icon: Icons.check_circle_outline,
         ),
         _buildTimelineTile(
           status: OrderStatus.finished,
           title: 'Order Completed',
-          subtitle: 'Thank you for your purchase',
+          subtitle: admin
+              ? 'The order has been successfully fulfilled'
+              : 'Thank you for your purchase',
           time: order.finishedAt,
           icon: Icons.done_all,
           isLast: true,

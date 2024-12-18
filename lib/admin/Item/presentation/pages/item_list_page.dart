@@ -1,4 +1,5 @@
-import 'package:coffee_app/admin/Item/add_item_page.dart';
+import 'package:coffee_app/admin/Item/presentation/pages/add_item_page.dart';
+import 'package:coffee_app/admin/Item/presentation/widgets/admin_item_card.dart';
 import 'package:coffee_app/app.dart';
 import 'package:coffee_app/features/item/presentation/cubits/item_cubit.dart';
 import 'package:coffee_app/features/item/presentation/cubits/item_state.dart';
@@ -37,13 +38,25 @@ class ItemListPage extends StatelessWidget {
           // loaded
           else if (state is ItemLoaded) {
             final items = state.items;
-            return ListView.builder(
+
+            if (items.isEmpty) {
+              return const Center(child: Text('No item found'));
+            }
+
+            return GridView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.6,
+                mainAxisSpacing: 24,
+                crossAxisSpacing: 15,
+              ),
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
-                return ListTile(
-                  title: Text(item.name),
-                );
+                return AdminItemCard(item: item);
               },
             );
           }

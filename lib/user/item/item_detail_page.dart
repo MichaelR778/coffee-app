@@ -38,7 +38,7 @@ class _ItemDetailPageState extends State<ItemDetailPage> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios),
         ),
-        title: const Text('Detail'),
+        title: const Text('Item Detail'),
         actions: [
           IconButton(
             onPressed: () {},

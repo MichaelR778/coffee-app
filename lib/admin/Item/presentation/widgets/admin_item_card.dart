@@ -1,12 +1,11 @@
+import 'package:coffee_app/admin/Item/presentation/pages/admin_item_detail_page.dart';
 import 'package:coffee_app/features/item/domain/entities/item.dart';
-import 'package:coffee_app/theme/app_colors.dart';
-import 'package:coffee_app/user/item/item_detail_page.dart';
 import 'package:flutter/material.dart';
 
-class ItemCard extends StatelessWidget {
+class AdminItemCard extends StatelessWidget {
   final Item item;
 
-  const ItemCard({super.key, required this.item});
+  const AdminItemCard({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,7 @@ class ItemCard extends StatelessWidget {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ItemDetailPage(item: item),
+          builder: (context) => AdminItemDetailPage(item: item),
         ),
       ),
       child: Container(
@@ -60,30 +59,13 @@ class ItemCard extends StatelessWidget {
 
                   const SizedBox(height: 10),
 
-                  // price and add button
-                  Row(
-                    children: [
-                      Text(
-                        "\$ ${item.price}",
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const Spacer(),
-                      Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 16,
-                        ),
-                      ),
-                    ],
+                  // price
+                  Text(
+                    "\$ ${item.price}",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),

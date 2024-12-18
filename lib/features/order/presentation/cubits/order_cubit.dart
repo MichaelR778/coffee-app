@@ -86,4 +86,40 @@ class OrderCubit extends Cubit<OrderState> {
       loadUserOrder();
     }
   }
+
+  /*
+
+  Update order status by admin / coffee store worker
+
+  */
+
+  Future<void> acceptOrder(int orderId) async {
+    try {
+      await orderRepo.acceptOrder(orderId);
+    } catch (e) {
+      emit(OrderError(message: e.toString()));
+      // override error state
+      loadAllOrder();
+    }
+  }
+
+  Future<void> orderReady(int orderId) async {
+    try {
+      await orderRepo.orderReady(orderId);
+    } catch (e) {
+      emit(OrderError(message: e.toString()));
+      // override error state
+      loadAllOrder();
+    }
+  }
+
+  Future<void> finishOrder(int orderId) async {
+    try {
+      await orderRepo.finishOrder(orderId);
+    } catch (e) {
+      emit(OrderError(message: e.toString()));
+      // override error state
+      loadAllOrder();
+    }
+  }
 }

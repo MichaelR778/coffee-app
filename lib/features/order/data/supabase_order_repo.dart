@@ -47,4 +47,67 @@ class SupabaseOrderRepo implements OrderRepo {
       throw Exception('Failed to cancel order: $e');
     }
   }
+
+  @override
+  Future<void> acceptOrder(int orderId) async {
+    try {
+      final orderJson =
+          await supabase.from('orders').select().eq('id', orderId).single();
+      final order = Order.fromJson(orderJson);
+
+      // pending -> brewing
+      if (order.status != OrderStatus.pending) {
+        throw Exception('Order status mismatch');
+      }
+
+      await supabase.from('orders').update({
+        'status': 'brewing',
+        'accepted_at': DateTime.now().toIso8601String(),
+      }).eq('id', orderId);
+    } catch (e) {
+      throw Exception('Failed to update order status: $e');
+    }
+  }
+
+  @override
+  Future<void> orderReady(int orderId) async {
+    try {
+      final orderJson =
+          await supabase.from('orders').select().eq('id', orderId).single();
+      final order = Order.fromJson(orderJson);
+
+      // brewing -> ready
+      if (order.status != OrderStatus.brewing) {
+        throw Exception('Order status mismatch');
+      }
+
+      await supabase.from('orders').update({
+        'status': 'ready',
+        'ready_at': DateTime.now().toIso8601String(),
+      }).eq('id', orderId);
+    } catch (e) {
+      throw Exception('Failed to update order status: $e');
+    }
+  }
+
+  @override
+  Future<void> finishOrder(int orderId) async {
+    try {
+      final orderJson =
+          await supabase.from('orders').select().eq('id', orderId).single();
+      final order = Order.fromJson(orderJson);
+
+      // ready -> finished
+      if (order.status != OrderStatus.ready) {
+        throw Exception('Order status mismatch');
+      }
+
+      await supabase.from('orders').update({
+        'status': 'finished',
+        'finished_at': DateTime.now().toIso8601String(),
+      }).eq('id', orderId);
+    } catch (e) {
+      throw Exception('Failed to update order status: $e');
+    }
+  }
 }

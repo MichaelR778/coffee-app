@@ -1,5 +1,8 @@
-import 'package:coffee_app/admin/Item/item_list_page.dart';
+import 'package:coffee_app/admin/Item/presentation/pages/item_list_page.dart';
+import 'package:coffee_app/admin/order/presentation/pages/finished_order_page.dart';
+import 'package:coffee_app/admin/order/presentation/pages/ongoing_order_page.dart';
 import 'package:coffee_app/features/auth/presentation/cubits/auth_cubit.dart';
+import 'package:coffee_app/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +18,8 @@ class _AdminRootState extends State<AdminRoot> {
 
   final List<Widget> pages = [
     const ItemListPage(),
-    const Center(child: Text('Ongoing Orders')),
-    const Center(child: Text('Finished Orders')),
+    const OngoingOrderPage(),
+    const FinishedOrderPage(),
   ];
 
   @override
@@ -24,6 +27,7 @@ class _AdminRootState extends State<AdminRoot> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.read<AuthCubit>().logout(),
+        child: const Icon(Icons.logout),
       ),
       body: pages[currIndex],
       bottomNavigationBar: ClipRRect(
@@ -32,6 +36,7 @@ class _AdminRootState extends State<AdminRoot> {
           topRight: Radius.circular(24),
         ),
         child: NavigationBar(
+          indicatorColor: Colors.transparent,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
           selectedIndex: currIndex,
           onDestinationSelected: (int index) {
@@ -41,15 +46,27 @@ class _AdminRootState extends State<AdminRoot> {
           },
           destinations: const [
             NavigationDestination(
-              icon: Icon(Icons.fastfood),
+              icon: Icon(Icons.coffee),
+              selectedIcon: Icon(
+                Icons.coffee,
+                color: AppColors.primary,
+              ),
               label: 'Menu',
             ),
             NavigationDestination(
               icon: Icon(Icons.list),
+              selectedIcon: Icon(
+                Icons.list,
+                color: AppColors.primary,
+              ),
               label: 'Ongoing',
             ),
             NavigationDestination(
               icon: Icon(Icons.check),
+              selectedIcon: Icon(
+                Icons.check,
+                color: AppColors.primary,
+              ),
               label: 'Finished',
             ),
           ],
